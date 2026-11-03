@@ -1,0 +1,19 @@
+services:
+  redmine-mcp-server:
+    image: ghcr.io/jztan/redmine-mcp-server:2.8.0
+    container_name: redmine-mcp-server
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env.docker
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./attachments:/app/attachments
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
